@@ -70,6 +70,13 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <OpenMPSupport>true</OpenMPSupport>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -123,7 +130,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Lab1.cpp" />
+    <ClCompile Include="Lab2.cpp" />
+    <ClCompile Include="Lab3.cpp" />
+    <ClCompile Include="Lab4.cpp" />
+    <ClCompile Include="Lab6.cpp" />
     <ClCompile Include="ParallelProgramming.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Lab1.h" />
+    <ClInclude Include="Lab2.h" />
+    <ClInclude Include="Lab3.h" />
+    <ClInclude Include="Lab4.h" />
+    <ClInclude Include="Lab6.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
