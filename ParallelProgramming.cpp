@@ -30,6 +30,11 @@ int main()
 
         if (!(cin >> lab))
         {
+            if (cin.eof())
+            {
+                break;
+            }
+
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cout << "Некорректный ввод\n";
