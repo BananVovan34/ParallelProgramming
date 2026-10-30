@@ -1,5 +1,7 @@
 #include <iostream>
 #include <limits>
+#include <charconv>
+#include <string>
 #define NOMINMAX
 #include <Windows.h>
 #include "Lab1.h"
@@ -10,8 +12,31 @@
 
 using namespace std;
 
-int main()
+int main(int argc, char* argv[])
 {
+    if (argc >= 2 && string(argv[1]) == "--lab2-thread-probe")
+    {
+        SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX);
+        int requested = 0;
+
+        if (argc != 3)
+        {
+            return 0;
+        }
+
+        string argument = argv[2];
+        auto result = from_chars(argument.data(), argument.data() + argument.size(), requested);
+
+        if (result.ec != errc() || result.ptr != argument.data() + argument.size()
+            || requested < 1 || requested > lab2ThreadSearchLimit)
+        {
+            return 0;
+        }
+
+        // В служебном режиме код завершения передаёт фактический размер команды.
+        return lab2ProbeExitBase + measureLab2Team(requested);
+    }
+
     SetConsoleCP(CP_UTF8);
     SetConsoleOutputCP(CP_UTF8);
 
