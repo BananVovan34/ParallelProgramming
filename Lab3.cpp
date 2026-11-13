@@ -94,16 +94,13 @@ namespace
              << ", проверка: " << (value == 1 && errors == 0 ? "успешно" : "ошибка") << '\n';
     }
 
+
     void showThreadprivate()
     {
         cout << "\n4. threadprivate (пример 15)\n";
 
-#pragma omp parallel num_threads(4)
-        {
-            threadValue = 0;
-        }
-
         threadValue = 1;
+
         int firstTeam = 0;
         int secondTeam = 0;
         int errors = 0;
@@ -111,6 +108,7 @@ namespace
 #pragma omp parallel num_threads(4) shared(firstTeam) reduction(+:errors)
         {
             int thread = omp_get_thread_num();
+
             int before = threadValue;
 
             if (before != (thread == 0 ? 1 : 0))
@@ -121,14 +119,18 @@ namespace
             threadValue = thread;
 
 #pragma omp single
-            firstTeam = omp_get_num_threads();
+            {
+                firstTeam = omp_get_num_threads();
+            }
 
 #pragma omp critical(outputLab3)
-            cout << "Первая область, нить " << thread << ": до = " << before
-                 << ", после = " << threadValue << '\n';
+            cout << "Первая область, нить " << thread
+                << ": до = " << before
+                << ", после = " << threadValue << '\n';
         }
 
-        cout << "Между областями: threadValue = " << threadValue << '\n';
+        cout << "Между областями: threadValue = "
+            << threadValue << '\n';
 
         if (threadValue != 0)
         {
@@ -145,16 +147,26 @@ namespace
             }
 
 #pragma omp single
-            secondTeam = omp_get_num_threads();
+            {
+                secondTeam = omp_get_num_threads();
+            }
 
 #pragma omp critical(outputLab3)
             cout << "Вторая область, нить " << thread
-                 << ": сохранено = " << threadValue << '\n';
+                << ": сохранено = " << threadValue << '\n';
         }
 
-        cout << "Размеры команд: " << firstTeam << " и " << secondTeam
-             << ", проверка: " << (firstTeam == secondTeam && errors == 0 ? "успешно" : "ошибка") << '\n';
+        bool correct = firstTeam == 4
+            && secondTeam == 4
+            && firstTeam == secondTeam
+            && errors == 0;
+
+        cout << "Размеры команд: " << firstTeam
+            << " и " << secondTeam
+            << ", проверка: "
+            << (correct ? "успешно" : "ошибка") << '\n';
     }
+
 
     void showCopyin()
     {

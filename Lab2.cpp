@@ -144,25 +144,6 @@ namespace
                 upper = middle;
             }
         }
-
-        cout << "\nПовторная проверка границы " << lower << " / " << upper << ":\n";
-
-        for (int attempt = 0; attempt < 3; attempt++)
-        {
-            ThreadProbe success = probeThreadCount(lower);
-            ThreadProbe failure = probeThreadCount(upper);
-
-            if (success.inconclusive || failure.inconclusive || !success.completed
-                || failure.completed || GetTickCount64() - start > 90000)
-            {
-                cout << "Граница не подтверждена повторно; устойчивый максимум не установлен\n";
-                return;
-            }
-        }
-
-        cout << "Экспериментальный максимум полного выполнения запроса: " << lower << '\n';
-        cout << "Запрос " << upper << " не выполнен полностью в трёх повторных пробах\n";
-        cout << "Результат относится к текущим ресурсам, runtime и настройкам среды\n";
     }
 
     void showConditionalParallel()
